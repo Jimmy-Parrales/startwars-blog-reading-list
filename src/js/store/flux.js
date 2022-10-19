@@ -1,43 +1,26 @@
+import { PeliculasStore, Peliculas } from "./Peliculas";
+import { Personajestore, Personajes } from "./Personajes";
+import { Planetastore, Planetas } from "./Planetas";
+import { Especiestore, Especies } from "./Especies";
+import { Navestore, NavesEspaciales } from "./Naves";
+import { VehiculoStore, Vehiculo } from "./Vehiculos";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			...PeliculasStore,//el dato no cae encima de otro
+			...Personajestore,
+			...Planetastore,
+			...Especiestore,
+			...Navestore,
+			...VehiculoStore
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
-			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
-
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
-			}
+			...Peliculas(getStore,getActions,setStore),
+			...Personajes(getStore,getActions,setStore),
+			...Planetas(getStore,getActions,setStore),
+			...Especies(getStore,getActions,setStore),
+			...NavesEspaciales(getStore,getActions,setStore),
+			...Vehiculo(getStore,getActions,setStore)
 		}
 	};
 };
